@@ -1,6 +1,6 @@
 NodeMCU ESP8266 wifi version of RfCat RfKitten using inexpensive CC1101
 
-The code is memory efficient, but it runs fine (didn't pass any variables by reference, etc.)
+The code is not memory efficient, but it runs fine (didn't pass any variables e.g. String by reference, etc.)
 
 I tried to keep the INO code simple so users & beginners can easily understand, mod, create your own personalized version of RFmoggy 
 
