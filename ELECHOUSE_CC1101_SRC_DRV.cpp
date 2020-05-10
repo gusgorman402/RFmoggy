@@ -419,6 +419,7 @@ SpiWriteBurstReg(CC1101_PATABLE,PA_TABLE,8);
 
 
 //repeat function of setMHZ, I was just comparing algorithms. Copied from Space Teddy library
+//function will give inaccurate Freq setting. Use setMHz instead
 void ELECHOUSE_CC1101::set_freq(uint32_t freq)
 {
     // this is split into 3 bytes that are written to 3 different registers on the CC1101
