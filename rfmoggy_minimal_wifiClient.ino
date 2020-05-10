@@ -222,8 +222,8 @@ int convertBinStrToInt(String binaryString){
 
 void setup(void){
 
-  main_menu = "<html><body><center><h1>RfMoggy</h1>";
-  main_menu += "<h2>ESP8266 CC1101 Sub-1GHz OOK Transmitter</h2>";
+  main_menu = "<html><body><center><h1>RFmoggy</h1>";
+  main_menu += "<h2>NodeMCU ESP8266 CC1101 Sub-1GHz OOK Transmitter</h2>";
   main_menu += "<br><br><a href=\"jukebox\">Touchtunes Jukebox Remote</a><br><br>";
   main_menu += "<br><br><a href=\"garage\">Garage Door DIP Switch Hacker</a><br><br>";
   main_menu += "<br><br><a href=\"rfpwnon\">Rfpwnon Brute Force</a><br><br>";
