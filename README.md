@@ -1,8 +1,11 @@
 ESP8266 wifi version of RfCat RfKitten
+
 CC1101 Registers set to transmit OOK signals only
 
 ELECHOUSE_CC1101_SRC_DRV.cpp
+
   Modified version of LSatan CC1101 library
+  
     Added set_rxbw function (copied from LSatan debug tool)
     Added set_drate
     Added split_mdmcgf4
