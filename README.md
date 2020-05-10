@@ -2,7 +2,7 @@ ESP8266 wifi version of RfCat RfKitten
 
 CC1101 Registers set to transmit OOK signals only
 
-ELECHOUSE_CC1101_SRC_DRV.cpp
+ELECHOUSE_CC1101_SRC_DRV.cpp  ******************************
 
 Modified version of LSatan CC1101 library
 
@@ -24,7 +24,7 @@ Modded setMHz to change TEST0 registerModded setCCMode. Changed serial mode to T
 
 Modded SendData. First byte in TX FIFO is packet length? Changed to 0. Packet length byte was being added to packets
 
-rfmoggy_minimal_wifiClient.ino
+rfmoggy_minimal_wifiClient.ino  **********************************
 
 Connects to your wifi network. Simple web interface
 
