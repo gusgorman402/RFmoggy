@@ -1,4 +1,9 @@
-ESP8266 wifi version of RfCat RfKitten
+NodeMCU ESP8266 wifi version of RfCat RfKitten using inexpensive CC1101
+
+The code is memory efficient, but it runs fine (didn't pass any variables by reference, etc.)
+
+I tried to keep the INO code simple so users & beginners can easily understand, mod, create your own personalized version of RFmoggy 
+
 
 CC1101 Registers set to transmit OOK signals only
 
