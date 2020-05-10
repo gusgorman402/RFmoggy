@@ -20,7 +20,9 @@ Added setIdle (for testing. MCSM1 register sets to idle automatically)
 
 Added all registers to Init function. Got register values for ASK/OOK from docs&smartrf studio, space teddy, rfkitten
 
-Modded setMHz to change TEST0 registerModded setCCMode. Changed serial mode to TX FIFO, packet has no address, length, or crc bytes
+Modded setMHz to change TEST0 register
+
+Modded setCCMode. Changed serial mode to TX FIFO, packet has no address, length, or crc bytes
 
 Modded SendData. First byte in TX FIFO is packet length? Changed to 0. Packet length byte was being added to packets
 
