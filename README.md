@@ -29,7 +29,9 @@ Modded setMHz to change TEST0 register
 
 Modded setCCMode. Changed serial mode to TX FIFO, packet has no address, length, or crc bytes
 
-Modded SendData. First byte in TX FIFO is packet length? Changed to 0. Packet length byte was being added to packets
+Modded SendData. Removed SFTX (tx fifo flush). Not needed if no Underflow, make sure packet sizes equal PKTLEN register!
+
+Modded SendData. Don't send length byte as first byte in TX FIFO.
 
 rfmoggy_minimal_wifiClient.ino  **********************************
 
