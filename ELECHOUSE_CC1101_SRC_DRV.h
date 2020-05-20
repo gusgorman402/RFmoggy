@@ -123,24 +123,18 @@ private:
   void SpiReadBurstReg(byte addr, byte *buffer, byte num);
   void setSpi(void);
   void RegConfigSettings(void);
-
+  void Calibrate(void);
 public:
   void Init(void);
   byte SpiReadStatus(byte addr);
   void setSpiPin(byte sck, byte miso, byte mosi, byte ss);
   void setGDO(byte gdo0, byte gdo2);
   void setCCMode(bool s);
-  void setPktLen(byte g);
   void setModulation(byte m);
   void setPA(int p);
   void setMHZ(float mhz);
-  void set_freq(uint32_t freq);
-  void Split_MDMCFG4(void);
-  void set_rxbw(float f);
-  void set_drate(float d);
   void setRxBW(byte RxBW);
   void setChannel(byte chnl);
-  void setIdle(void);
   void SetTx(void);
   void SetRx(void);
   void SetTx(float mhz);
@@ -153,6 +147,16 @@ public:
   byte ReceiveData(byte *rxBuffer);
   void SpiStrobe(byte strobe);
   void SpiWriteReg(byte addr, byte value);
+  void setClb(byte b, byte s, byte e);
+
+  void waitForIdle(void);
+  void flushTxFifo(void);
+  void setIdle(void);
+  void setPktLen(byte g);
+  void set_rxbw(float f);
+  void Split_MDMCFG4(void);
+  void setDRate(float d);
+
 };
 
 extern ELECHOUSE_CC1101 ELECHOUSE_cc1101;
