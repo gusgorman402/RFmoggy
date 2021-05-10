@@ -1,9 +1,31 @@
-NodeMCU ESP8266 wifi version of RfCat RfKitten using inexpensive CC1101
+NodeMCU ESP8266/ESP32 wifi version of RfCat RfKitten using inexpensive CC1101
 
 The code is not memory efficient, but it runs fine (didn't pass any variables e.g. String by reference, etc.)
 
-I tried to keep the INO code simple so users & beginners can easily understand, mod, create your own personalized version of RFmoggy 
+I tried to keep the INO code simple so users & beginners can easily understand, mod, create your own personalized version of RFmoggy
 
+### ESP32 support
+
+RFMoggy is now compatible with ESP32
+
+It uses an ESP32 + CC1101 module with the following connections:
+
+sck = 18
+miso = 19
+mosi = 23
+csn = 5
+gdo0 = 2
+gdo2 = 4
+
+You can use the hola.ino sketch with the following configuration:
+
+* Board - "ESP32 Dev Module".
+* Flash Size - "4MB (32Mb)".
+* CPU Frequency - "240MHz (WiFi/BT)".
+* Flash Frequency - "80MHz"
+* Flash Mode - "DIO"
+
+### Information
 
 CC1101 Registers set to transmit OOK signals only
 
