@@ -17,7 +17,7 @@ csn = 5
 gdo0 = 2
 gdo2 = 4
 
-You can use the hola.ino sketch with the following configuration:
+You can use the rfmoggy-esp32.ino sketch with the following configuration:
 
 * Board - "ESP32 Dev Module".
 * Flash Size - "4MB (32Mb)".
