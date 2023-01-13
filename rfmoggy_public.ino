@@ -5,9 +5,9 @@
 //#include <cc1101_debug_service.h>
 
 
-/* Put your SSID & Password */
-//const char* ssid = "RFmoggy";  // Enter SSID here
-//const char* password = "diymoggy";  //Enter Password here
+/* Wifi Host mode */
+//const char* ssid = "RFmoggy";  // Wifi network you connect to
+//const char* password = "diymoggy";  //moggy wifi password
 
 /* Put IP Address details */
 //IPAddress local_ip(192,168,1,1);
