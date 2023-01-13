@@ -1,41 +1,9 @@
-NodeMCU ESP8266 wifi version of RfCat RfKitten using inexpensive CC1101
+NodeMCU ESP8266 CC101 transmitter with pre-saved signals
 
-The code is not memory efficient, but it runs fine (didn't pass any variables e.g. String by reference, etc.)
-
-I tried to keep the INO code simple so users & beginners can easily understand, mod, create your own personalized version of RFmoggy 
+Youtube demo: 
 
 
-CC1101 Registers set to transmit OOK signals only
-
-ELECHOUSE_CC1101_SRC_DRV.cpp  ******************************
-
-Modified version of LSatan CC1101 library
-
-Added set_rxbw function (copied from LSatan debug tool)
-
-Added set_drate
-
-Added split_mdmcgf4
-
-Added set_mhz (repetitive, for testing)
-
-Added setPktLen (not needed even though rfcat examples always use it in fixed length mode)
-
-Added setIdle (for testing. MCSM1 register sets to idle automatically)
-
-Added all registers to Init function. Got register values for ASK/OOK from docs&smartrf studio, space teddy, rfkitten
-
-Modded setMHz to change TEST0 register
-
-Modded setCCMode. Changed serial mode to TX FIFO, packet has no address, length, or crc bytes
-
-Modded SendData. Removed SFTX (tx fifo flush). Not needed if no Underflow, make sure packet sizes equal PKTLEN register!
-
-Modded SendData. Don't send length byte as first byte in TX FIFO.
-
-rfmoggy_minimal_wifiClient.ino  **********************************
-
-Connects to your wifi network. Simple web interface
+Connects to your wifi network or it can broadcast its own wifi network (credentials are in the .ino file)
 
 Touchtunes Jukebox Menu - Signals for controlling jukeboxes commonly found in US bars
 
