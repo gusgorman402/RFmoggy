@@ -1,4 +1,4 @@
-NodeMCU ESP8266 CC101 transmitter with pre-saved signals
+NodeMCU ESP8266 CC1101 transmitter with pre-saved signals
 
 Youtube demo: coming soon
 
