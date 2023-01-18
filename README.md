@@ -4,6 +4,8 @@ Youtube demo: https://youtu.be/ELicQQNkzBY
 
 
 Connects to your wifi network or it can broadcast its own wifi network (credentials are in the .ino file)
+The code is modeled after the RfPwnOn program. If you understand RfPwnOn, you can easily add more signals & menus
+https://github.com/exploitagency/github-rfpwnon
 
 Touchtunes Jukebox Menu - Signals for controlling jukeboxes commonly found in US bars
 
