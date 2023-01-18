@@ -1,6 +1,6 @@
 NodeMCU ESP8266 CC1101 transmitter with pre-saved signals
 
-Youtube demo: coming soon
+Youtube demo: https://youtu.be/ELicQQNkzBY
 
 
 Connects to your wifi network or it can broadcast its own wifi network (credentials are in the .ino file)
