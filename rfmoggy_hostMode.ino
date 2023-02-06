@@ -631,9 +631,6 @@ void setup(void){
   jammer_menu += "<p><input type=\"submit\" value=\"Submit\"></p>";
   jammer_menu += "<br>Car alarms and Garage Doors: 315 / 390MHz<br>";
   jammer_menu += "<br>Sensors and Jukebox: 433.92MHz<br>";
-  jammer_menu += "<br>Sarpy Control: 859.7875Mhz, 858.2375, 858.9875, 859.2375<br>";
-  jammer_menu += "<br>Omaha Control: 857.4375MHz, 856.4375, 856.9375, 857.9375<br>";
-  jammer_menu += "<br>Douglas Control: 853.7625MHz, 852.9625, 853.725, 853.95<br>";
   jammer_menu += "</form><p><a href=\"/\">Return to Main Menu</a></p></body></html>";
 
 }
