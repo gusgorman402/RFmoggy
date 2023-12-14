@@ -5,9 +5,9 @@
 //#include <cc1101_debug_service.h>
 
 
-/* Wifi Host mode */
-//const char* ssid = "RFmoggy";  // Wifi network you connect to
-//const char* password = "diymoggy";  //moggy wifi password
+/* Put your SSID & Password */
+//const char* ssid = "RFmoggy";  // Enter SSID here
+//const char* password = "diymoggy";  //Enter Password here
 
 /* Put IP Address details */
 //IPAddress local_ip(192,168,1,1);
@@ -30,7 +30,7 @@ byte sendPacket[60];
 String debruijn_ten = "0000000000100000000110000000101000000011100000010010000001011000000110100000011110000010001000001001100000101010000010111000001100100000110110000011101000001111100001000010001100001001010000100111000010100100001010110000101101000010111100001100010000110011000011010100001101110000111001000011101100001111010000111111000100010100010001110001001001000100101100010011010001001111000101001100010101010001010111000101100100010110110001011101000101111100011000110010100011001110001101001000110101100011011010001101111000111001100011101010001110111000111100100011110110001111101000111111100100100110010010101001001011100100110110010011101001001111100101001010011100101010110010101101001010111100101100110010110101001011011100101110110010111101001011111100110011010011001111001101010100110101110011011011001101110100110111110011100111010110011101101001110111100111101010011110111001111101100111111010011111111010101010111010101101101010111110101101011011110101110111010111101101011111110110110111011011111101110111110111101111111111000000000";
 String debruijn_nine = "0000000001000000011000000101000000111000001001000001011000001101000001111000010001000010011000010101000010111000011001000011011000011101000011111000100011000100101000100111000101001000101011000101101000101111000110011000110101000110111000111001000111011000111101000111111001001001011001001101001001111001010011001010101001010111001011011001011101001011111001100111001101011001101101001101111001110101001110111001111011001111101001111111010101011010101111010110111010111011010111111011011011111011101111011111111100000000";
 String debruijn_eight = "00000000100000011000001010000011100001001000010110000110100001111000100010011000101010001011100011001000110110001110100011111001001010010011100101011001011010010111100110011010100110111001110110011110100111111010101011101011011010111110110111101110111111110000000";
-String jam_packet = "11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
+String noisy_packet = "11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
 
 //Other Touchtunes codes are listed in Havoc Firmware https://github.com/furrtek/portapack-havoc/blob/master/firmware/application/apps/ui_touchtunes.hpp
 String jukebox_pwm_prefix = "11111111111111110000000010100010100010001000101000";  //preamble sync and vendor ID x5D converted to PWM. NEC Infrared Protocol
@@ -48,7 +48,9 @@ String jukebox_menu = "";
 String garage_menu = "";
 String debruijn_menu = "";
 String rfpwnon_menu = "";
-String jammer_menu = "";
+String noise_menu = "";
+String widenoise_menu = "";
+String cwavenoise_menu = "";
 
 
 void handle_NotFound(){
@@ -81,10 +83,21 @@ void handleRfpwnonMenu(){
   server.send(200, "text/html", rfpwnon_menu);
 }
 
-void handleJammerMenu(){
-  Serial.println("User called the Jammer menu");
-  server.send(200, "text/html", jammer_menu);
+void handleNoiseMenu(){
+  Serial.println("User called the Noise menu");
+  server.send(200, "text/html", noise_menu);
 }
+
+void handleWideNoiseMenu(){
+  Serial.println("User called the Wide Noise menu");
+  server.send(200, "text/html", widenoise_menu);
+}
+
+void handleCwaveNoiseMenu(){
+  Serial.println("User called the CW Noise menu");
+  server.send(200, "text/html", cwavenoise_menu);
+}
+
 
 
 void handleJukeboxSend() {  
@@ -203,24 +216,98 @@ void handleRfpwnonSend(){
   server.send(200, "text/html", menu_htmlHeader + "<h1>Signal is sent</h1><p><a href=\"/\">Return to Main Menu</a></p><p><a href=\"rfpwnon\">Return to RfPwnOn Menu</a></p>");
 }
 
-void handleJammerSend(){
-  float jamMHz = server.arg("jammerMHz").toFloat();
-  float jamRate = server.arg("jammerRate").toFloat();
-  float jamDevn = server.arg("jammerDevn").toFloat();
-  int jamModu = server.arg("jammerModu").toInt();
-  int jamTime = server.arg("jammerTime").toInt();
+void handleNoiseSend(){
+  float noisyMHz = server.arg("noiseMHz").toFloat();
+  float noisyRate = server.arg("noiseRate").toFloat();
+  float noisyDevn = server.arg("noiseDevn").toFloat();
+  int noisyModu = server.arg("noiseModu").toInt();
+  int noisyTime = server.arg("noiseTime").toInt();
   //at 2kbps we can send about 250bytes per second. 50bytes per packet = 5 packets (repeats) per second
-  float onePacketTime = 248 / (jamRate * 1000);
-  int repeatJam = jamTime / onePacketTime;
-  Serial.print("Times repeating the jam packet: "); Serial.println(repeatJam);
-  //int repeatJam = jamTime * 5;
+  float onePacketTime = 248 / (noisyRate * 1000);
+  int repeatNoisy = noisyTime / onePacketTime;
+  Serial.print("Times repeating the noisy packet: "); Serial.println(repeatNoisy);
+  //int repeatNoisy = noisyTime * 5;
 
-  Serial.println(); Serial.println("TX: Jammer Signal");
-  binaryBruteSend(0, "0", "1", jamMHz, jamRate, repeatJam, 1000, 1,  "", false, jam_packet, false, jamModu, jamDevn);  
-  Serial.println("EOTX: Jammer Signal"); Serial.println();
+  Serial.println(); Serial.println("TX: Noise Signal");
+  binaryBruteSend(0, "0", "1", noisyMHz, noisyRate, repeatNoisy, 1000, 1,  "", false, noisy_packet, false, noisyModu, noisyDevn);  
+  Serial.println("EOTX: Noise Signal"); Serial.println();
 
-  server.send(200, "text/html", menu_htmlHeader + "<h1>Signal is sent</h1><p><a href=\"/\">Return to Main Menu</a></p><p><a href=\"jammer\">Return to Jammer Menu</a></p>");
+  server.send(200, "text/html", menu_htmlHeader + "<h1>Signal is sent</h1><p><a href=\"/\">Return to Main Menu</a></p><p><a href=\"noise\">Return to Noise Menu</a></p>");
 }
+
+void handleWideNoiseSend(){
+  uint8_t chipstate;
+  float widenoisyMHz = server.arg("widenoiseMHz").toFloat();
+  unsigned int widenoisyBandwidth = server.arg("widenoiseBandwidth").toInt();
+  unsigned long widenoisyDuration = server.arg("widenoiseDuration").toInt();
+
+  pinMode(gdo0, OUTPUT);
+  ELECHOUSE_cc1101.setMHZ(widenoisyMHz);
+  ELECHOUSE_cc1101.setModulation(2);
+  ELECHOUSE_cc1101.setPA(12);
+  //ELECHOUSE_cc1101.setDeviation(2.0);
+  ELECHOUSE_cc1101.setDRate(2.0);
+  ELECHOUSE_cc1101.setPktFormat(3);
+  ELECHOUSE_cc1101.SetTx();
+  chipstate = 0xFF;
+  while(chipstate != 0x13){ chipstate = (ELECHOUSE_cc1101.SpiReadStatus(CC1101_MARCSTATE) & 0x1F); }
+
+
+  Serial.println(); Serial.println("TX: Noise Signal");
+  digitalWrite(LED_BUILTIN, LOW);  
+  tone(gdo0, widenoisyBandwidth);
+  
+  delay(widenoisyDuration);
+  noTone(gdo0);
+  digitalWrite(LED_BUILTIN, HIGH);
+  
+  Serial.println("EOTX: Noise Signal"); Serial.println();
+  
+  ELECHOUSE_cc1101.setSidle();
+  while(chipstate != 0x01){ chipstate = (ELECHOUSE_cc1101.SpiReadStatus(CC1101_MARCSTATE) & 0x1F); }
+  ELECHOUSE_cc1101.setGDO0(gdo0);
+  ELECHOUSE_cc1101.setPktFormat(0);
+
+  server.send(200, "text/html", menu_htmlHeader + "<h1>Signal is sent</h1><p><a href=\"/\">Return to Main Menu</a></p><p><a href=\"widenoise\">Return to Wide Noise Menu</a></p>");
+
+}
+void handleCwaveNoiseSend(){
+  uint8_t chipstate;
+  float cwavenoisyMHz = server.arg("cwavenoiseMHz").toFloat();
+  //unsigned int cwavenoisyBandwidth = server.arg("widenoiseBandwidth").toInt();
+  unsigned long cwavenoisyDuration = server.arg("cwavenoiseDuration").toInt();
+
+  pinMode(gdo0, OUTPUT);
+  ELECHOUSE_cc1101.setMHZ(cwavenoisyMHz);
+  ELECHOUSE_cc1101.setModulation(2);
+  ELECHOUSE_cc1101.setPA(12);
+  //ELECHOUSE_cc1101.setDeviation(2.0);
+  ELECHOUSE_cc1101.setDRate(1.0);
+  ELECHOUSE_cc1101.setPktFormat(3);
+  ELECHOUSE_cc1101.SetTx();
+  chipstate = 0xFF;
+  while(chipstate != 0x13){ chipstate = (ELECHOUSE_cc1101.SpiReadStatus(CC1101_MARCSTATE) & 0x1F); }
+
+
+  Serial.println(); Serial.println("TX: Noise Signal");
+  digitalWrite(LED_BUILTIN, LOW);   
+  digitalWrite(gdo0, HIGH);
+  delay(cwavenoisyDuration); 
+  digitalWrite(LED_BUILTIN, HIGH);
+  digitalWrite(gdo0, LOW);
+  
+  Serial.println("EOTX: Noise Signal"); Serial.println();
+  
+  ELECHOUSE_cc1101.setSidle();
+  while(chipstate != 0x01){ chipstate = (ELECHOUSE_cc1101.SpiReadStatus(CC1101_MARCSTATE) & 0x1F); }
+  ELECHOUSE_cc1101.setGDO0(gdo0);
+  ELECHOUSE_cc1101.setPktFormat(0);
+
+  server.send(200, "text/html", menu_htmlHeader + "<h1>Signal is sent</h1><p><a href=\"/\">Return to Main Menu</a></p><p><a href=\"cwavenoise\">Return to CW Noise Menu</a></p>");
+
+}
+
+
 
 
 //input dip switch size, PWM code for "0" and "1", frequency, datarate, repeatTimes, gap inside packet (microseconds), gap between repeats/packets (milliseconds)
@@ -293,7 +380,7 @@ void binaryBruteSend(int dipSize, String zero_pwm, String one_pwm, float freqmhz
     //ELECHOUSE_cc1101.flushTxFifo();
     //ELECHOUSE_cc1101.WaitForIdle();
     //ELECHOUSE_cc1101.FlushTxFifo();
-    digitalWrite(16, LOW);
+    digitalWrite(LED_BUILTIN, LOW);
 
     
     for( int k = 0; k <= pulseReps; k++ ){
@@ -348,7 +435,7 @@ void binaryBruteSend(int dipSize, String zero_pwm, String one_pwm, float freqmhz
     
     memset(bytesToSend, 0, 1036);
    
-    digitalWrite(16, HIGH);
+    digitalWrite(LED_BUILTIN, HIGH);
     delay(attemptPause);
   }
 }
@@ -452,10 +539,10 @@ void setup(void){
 
   //These values come from LSatan Calibration tool. RTLSDR required. https://github.com/LSatan/CC1101-Debug-Service-Tool/tree/master/Calibrate_frequency
   //setClb must be called before setMHz is called the first time
-  ELECHOUSE_cc1101.setClb(1,13,15); //pink case
-  ELECHOUSE_cc1101.setClb(2,16,19);
-  ELECHOUSE_cc1101.setClb(3,33,38);
-  ELECHOUSE_cc1101.setClb(4,38,39);
+  ELECHOUSE_cc1101.setClb(1,11,12); //big bread board
+  ELECHOUSE_cc1101.setClb(2,13,16);
+  ELECHOUSE_cc1101.setClb(3,26,30);
+  ELECHOUSE_cc1101.setClb(4,31,31);
   
   //ELECHOUSE_cc1101.setClb(1,16,18); //green case
   //ELECHOUSE_cc1101.setClb(2,20,24);
@@ -510,7 +597,7 @@ void setup(void){
   //WiFi.mode(WIFI_AP);
   //WiFi.softAP(ssid, password, 11);
   //WiFi.softAPConfig(local_ip, gateway, subnet);
-  //delay(100);
+ // delay(100);
 /*************************************************************************/
   
   server.on("/", handleMainMenu);      //Which routine to handle at root location. This is display page
@@ -518,20 +605,24 @@ void setup(void){
   server.on("/garage", handleGarageMenu);
   server.on("/debruijn", handleDebruijnMenu);
   server.on("/rfpwnon", handleRfpwnonMenu);
-  server.on("/jammer", handleJammerMenu);
+  server.on("/noise", handleNoiseMenu);
+  server.on("/widenoise", handleWideNoiseMenu);
+  server.on("/cwavenoise", handleCwaveNoiseMenu);
   
   server.on("/sendjukebox", handleJukeboxSend);
   server.on("/sendgarage", handleGarageSend);
   server.on("/senddebruijn", handleDebruijnSend);
   server.on("/sendrfpwnon", handleRfpwnonSend);
-  server.on("/sendjammer", handleJammerSend);
+  server.on("/sendnoise", handleNoiseSend);
+  server.on("/sendwidenoise", handleWideNoiseSend);
+  server.on("/sendcwavenoise", handleCwaveNoiseSend);
   server.onNotFound(handle_NotFound);
  
   server.begin();                  //Start server
   Serial.println("HTTP server started");  
 
-  pinMode(16, OUTPUT);
-  digitalWrite(16, HIGH);
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH);
 
   menu_htmlHeader = "<!DOCTYPE html> <html>";
   menu_htmlHeader += "<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\">";
@@ -549,7 +640,9 @@ void setup(void){
   main_menu += "<p><a href=\"garage\">Garage Door DIP Switch BruteForce</a></p>";
   main_menu += "<p><a href=\"debruijn\">Garage Door DIP De Bruijn</a></p>";
   main_menu += "<p><a href=\"rfpwnon\">Rfpwnon Brute Force</a></p>";
-  main_menu += "<p><a href=\"jammer\">Jammer</a></p>";
+  main_menu += "<p><a href=\"noise\">Noise</a></p>";
+  main_menu += "<p><a href=\"widenoise\">Wide Noise</a></p>";
+  main_menu += "<p><a href=\"cwavenoise\">CW Noise</a></p>";
   main_menu += "<br><br>Warning: No error checks for inputs. Your responsibility to verify inputs are valid (e.g. MHz ranges)";
   main_menu += "</body></html>";
 
@@ -616,22 +709,45 @@ void setup(void){
   rfpwnon_menu += "<p><input type=\"submit\" value=\"Submit\"></p>";
   rfpwnon_menu += "</form><p><a href=\"/\">Return to Main Menu</a></p></body></html>";
 
-  jammer_menu += menu_htmlHeader;
-  jammer_menu += "<title>Jammer</title>";
-  jammer_menu += "<body><h1>Jammer</h1>";
-  jammer_menu += "<h3>Simple Jammer</h3>";
-  //jammer_menu += "<p>Creates continuous data packets(50bytes) full of \"1\", \"ON\", 0xFF bytes at 2kbps</p>";
-  jammer_menu += "<form action=\"sendjammer\">";
-  jammer_menu += "<p><label>Jammer Freq MHz </label><input type=\"text\" name=\"jammerMHz\" size=\"10\" value=\"859.7875\"></p>";
-  jammer_menu += "<p><label>Jammer Baud </label><input type=\"text\" name=\"jammerRate\" size=\"10\" value=\"4.8\"></p>";
-  jammer_menu += "<p><label>Jammer Modulation </label><input type=\"text\" name=\"jammerModu\" size=\"10\" value=\"3\"><br>";
-  jammer_menu += "0=2-FSK 1=GFSK 2=ASK 3=4-FSK 4=MSK</p>";
-  jammer_menu += "<p><label>Jammer FreqDeviation </label><input type=\"text\" name=\"jammerDevn\" size=\"10\" value=\"1.8\"></p>";
-  jammer_menu += "<p><label>Seconds to Jam </label><input type=\"text\" name=\"jammerTime\" size=\"10\" value=\"30\"></p>";
-  jammer_menu += "<p><input type=\"submit\" value=\"Submit\"></p>";
-  jammer_menu += "<br>Car alarms and Garage Doors: 315 / 390MHz<br>";
-  jammer_menu += "<br>Sensors and Jukebox: 433.92MHz<br>";
-  jammer_menu += "</form><p><a href=\"/\">Return to Main Menu</a></p></body></html>";
+  noise_menu += menu_htmlHeader;
+  noise_menu += "<title>Noise</title>";
+  noise_menu += "<body><h1>Noise</h1>";
+  noise_menu += "<h3>Simple Noise</h3>";
+  noise_menu += "<h3>Transmits stream of 0xFF bytes<h3>";
+  //noise_menu += "<p>Creates continuous data packets(50bytes) full of \"1\", \"ON\", 0xFF bytes at 2kbps</p>";
+  noise_menu += "<form action=\"sendnoise\">";
+  noise_menu += "<p><label>Noise Freq MHz </label><input type=\"text\" name=\"noiseMHz\" size=\"10\" value=\"315.0\"></p>";
+  noise_menu += "<p><label>Noise Baud </label><input type=\"text\" name=\"noiseRate\" size=\"10\" value=\"4.8\"></p>";
+  noise_menu += "<p><label>Noise Modulation </label><input type=\"text\" name=\"noiseModu\" size=\"10\" value=\"2\"><br>";
+  noise_menu += "0=2-FSK 1=GFSK 2=ASK 3=4-FSK 4=MSK</p>";
+  noise_menu += "<p><label>Noise FreqDeviation </label><input type=\"text\" name=\"noiseDevn\" size=\"10\" value=\"1.8\"></p>";
+  noise_menu += "<p><label>Seconds of Noisy </label><input type=\"text\" name=\"noiseTime\" size=\"10\" value=\"30\"></p>";
+  noise_menu += "<p><input type=\"submit\" value=\"Submit\"></p>";
+  noise_menu += "</form><p><a href=\"/\">Return to Main Menu</a></p></body></html>";
+
+  widenoise_menu += menu_htmlHeader;
+  widenoise_menu += "<title>Wide Noise</title>";
+  widenoise_menu += "<body><h1>Wide Noise</h1>";
+  widenoise_menu += "<h3>Wide Noise</h3>";
+  widenoise_menu += "<h3>Transmits square wave. Arduino tone() function. Generates phase noise, spurs, harmonics<h3>";
+  widenoise_menu += "<form action=\"sendwidenoise\">";
+  widenoise_menu += "<p><label>Noise Freq MHz </label><input type=\"text\" name=\"widenoiseMHz\" size=\"10\" value=\"859.7875\"></p>";
+  widenoise_menu += "<p><label>Noise ToneHz (Hz: min 32Hz, max 65kHz) </label><input type=\"text\" name=\"widenoiseBandwidth\" size=\"10\" value=\"1200\"></p>";
+  widenoise_menu += "<p><label>Noise Duration (milliseconds) </label><input type=\"text\" name=\"widenoiseDuration\" size=\"10\" value=\"30000\"><br>";
+  widenoise_menu += "<p><input type=\"submit\" value=\"Submit\"></p>";
+  widenoise_menu += "</form><p><a href=\"/\">Return to Main Menu</a></p></body></html>";
+
+  cwavenoise_menu += menu_htmlHeader;
+  cwavenoise_menu += "<title>CW Noise</title>";
+  cwavenoise_menu += "<body><h1>CW Noise</h1>";
+  cwavenoise_menu += "<h3>CW Noise</h3>";
+  cwavenoise_menu += "<h3>Transmits continuous wave signal, narrowband noise<h3>";
+  cwavenoise_menu += "<form action=\"sendcwavenoise\">";
+  cwavenoise_menu += "<p><label>Noise Freq MHz </label><input type=\"text\" name=\"cwavenoiseMHz\" size=\"10\" value=\"315.0\"></p>";
+  cwavenoise_menu += "<p><label>Noise Duration (milliseconds) </label><input type=\"text\" name=\"cwavenoiseDuration\" size=\"10\" value=\"30000\"><br>";
+  cwavenoise_menu += "<p><input type=\"submit\" value=\"Submit\"></p>";
+  
+  cwavenoise_menu += "</form><p><a href=\"/\">Return to Main Menu</a></p></body></html>";
 
 }
 
